@@ -1,10 +1,8 @@
-# Compiled class files
+# Backend (Java/Spring Boot)
 *.class
 *.jar
 *.war
 *.ear
-
-# Maven
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -15,36 +13,24 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
+HELP.md
 
-# IDE
-.idea/
-*.iml
-*.iws
-*.ipr
-.classpath
-.project
-.settings/
-.vscode/
-*.swp
-*.swo
-*~
+# Maven
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# Logs
-logs/
-*.log
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Node
+# Frontend (Node.js/Vue)
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-# Frontend build
+dist/
+dist-ssr/
+*.local
+.vite/
+.cache/
+.eslintcache
 frontend/dist/
 frontend/.vite/
 frontend/*.local
@@ -52,21 +38,60 @@ frontend/.env
 frontend/.env.local
 frontend/.env.*.local
 
-# Database
-*.db
-*.sqlite
-
-# Application properties
+# Environment
+.env
+.env.local
+.env.*.local
 application-dev.yml
 application-prod.yml
 *.local.yml
 
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+.vscode/
+*.swp
+*.swo
+*~
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite
+
 # Test reports
 test-output/
 surefire-reports/
+coverage/
 
 # Temporary files
 *.tmp
 *.bak
 *.orig
 *.rej
+*.apt_generated
