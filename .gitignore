@@ -14,8 +14,6 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 HELP.md
-
-# Maven
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -61,8 +59,6 @@ application-prod.yml
 *.swp
 *.swo
 *~
-
-# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
