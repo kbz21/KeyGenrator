@@ -1,66 +1,54 @@
 <template>
-  <div v-if="key" class="card card-hover shadow">
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
-        <h3 class="card-title mb-0">
-          <i class="bi bi-clipboard-check text-success me-2"></i>
-          Generated Key
-        </h3>
-        <span class="badge bg-success">✅ Active</span>
-      </div>
+  <div v-if="key" class="key-display">
+    <div class="key-header">
+      <span class="key-title">
+        <i class="bi bi-clipboard-check text-success me-2"></i>
+        Generated Key
+      </span>
+      <span class="badge bg-success">Active</span>
+    </div>
 
-      <div class="bg-light p-3 rounded border">
-        <div class="d-flex justify-content-between align-items-start">
-          <pre class="mb-0 text-break font-monospace small">{{ key.generatedKey }}</pre>
-          <button
-            @click="copyToClipboard"
-            class="btn btn-sm btn-outline-secondary ms-2 flex-shrink-0"
-            :class="{ 'btn-success': copied }"
-          >
-            <i :class="copied ? 'bi bi-check-lg' : 'bi bi-clipboard'"></i>
-            {{ copied ? 'Copied' : 'Copy' }}
-          </button>
-        </div>
-      </div>
+    <div class="key-value-wrapper">
+      <pre class="key-value">{{ key.generatedKey }}</pre>
+      <button
+        @click="copyToClipboard(key.generatedKey)"
+        class="copy-btn"
+        :class="{ copied: isCopied }"
+      >
+        <i :class="isCopied ? 'bi bi-check-lg' : 'bi bi-clipboard'"></i>
+        {{ isCopied ? 'Copied' : 'Copy' }}
+      </button>
+    </div>
 
-      <div class="row g-3 mt-3">
-        <div class="col-6 col-md-3">
-          <div class="bg-primary bg-opacity-10 p-3 rounded text-center">
-            <small class="text-muted d-block">ID</small>
-            <strong class="fs-5">#{{ key.id }}</strong>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="bg-info bg-opacity-10 p-3 rounded text-center">
-            <small class="text-muted d-block">Algorithm</small>
-            <strong class="fs-5">{{ key.algorithm }}</strong>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="bg-success bg-opacity-10 p-3 rounded text-center">
-            <small class="text-muted d-block">Key Size</small>
-            <strong class="fs-5">{{ key.keySize }} bits</strong>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="bg-warning bg-opacity-10 p-3 rounded text-center">
-            <small class="text-muted d-block">Created</small>
-            <strong class="fs-6">{{ formatDate(key.createdAt) }}</strong>
-          </div>
-        </div>
+    <div class="key-details">
+      <div class="detail-item">
+        <span class="detail-label">ID</span>
+        <span class="detail-value">#{{ key.id }}</span>
       </div>
+      <div class="detail-item">
+        <span class="detail-label">Algorithm</span>
+        <span class="detail-value">{{ key.algorithm }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Key Size</span>
+        <span class="detail-value">{{ key.keySize }} bits</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Created</span>
+        <span class="detail-value">{{ formatDate(key.createdAt) }}</span>
+      </div>
+    </div>
 
-      <div class="alert alert-warning mt-3 mb-0">
-        <i class="bi bi-shield-exclamation me-2"></i>
-        <strong>Security Note:</strong> Never share this key publicly. Store it securely.
-      </div>
+    <div class="security-note">
+      <i class="bi bi-shield-exclamation me-2"></i>
+      Never share this key publicly. Store it securely.
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { toast } from 'vue3-toastify'
+import { useClipboard } from '@/composables/useClipboard'
 
 const props = defineProps({
   key: {
@@ -69,7 +57,7 @@ const props = defineProps({
   }
 })
 
-const copied = ref(false)
+const { copied: isCopied, copyToClipboard } = useClipboard()
 
 const formatDate = (dateString) => {
   const date = new Date(dateString)
@@ -81,17 +69,109 @@ const formatDate = (dateString) => {
     minute: '2-digit'
   })
 }
-
-const copyToClipboard = async () => {
-  try {
-    await navigator.clipboard.writeText(props.key.generatedKey)
-    copied.value = true
-    toast.success('Key copied to clipboard! 📋')
-    setTimeout(() => {
-      copied.value = false
-    }, 2000)
-  } catch (err) {
-    toast.error('Failed to copy key')
-  }
-}
 </script>
+
+<style scoped>
+.key-display {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.key-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.key-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.key-value-wrapper {
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  padding: 1rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.key-value {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  word-break: break-all;
+  white-space: pre-wrap;
+  margin: 0;
+  padding-right: 80px;
+  color: var(--text-primary);
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background: #667eea;
+  color: white;
+}
+
+.copy-btn.copied {
+  background: #28a745;
+  color: white;
+}
+
+.key-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.detail-item {
+  background: var(--bg-secondary);
+  padding: 0.75rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 0.25rem;
+}
+
+.security-note {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #856404;
+}
+</style>

@@ -21,11 +21,14 @@
       </option>
     </select>
     <div v-if="error" class="invalid-feedback">{{ error }}</div>
+    <small class="text-muted">
+      <i class="bi bi-info-circle"></i> Choose the encryption algorithm
+    </small>
   </div>
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   modelValue: {
     type: String,
     required: true

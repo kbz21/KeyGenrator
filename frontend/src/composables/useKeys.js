@@ -3,46 +3,34 @@ import { useKeyStore } from '@/store'
 
 export function useKeys() {
   const store = useKeyStore()
-  const searchQuery = ref('')
-  const filterAlgorithm = ref('ALL')
-  const sortBy = ref('newest')
+  const isInitialized = ref(false)
 
   onMounted(() => {
     console.log('🔄 useKeys composable mounted')
     fetchKeys()
+    isInitialized.value = true
   })
 
   onUnmounted(() => {
     console.log('🔄 useKeys composable unmounted')
+    isInitialized.value = false
   })
 
   async function fetchKeys() {
     await store.fetchAllKeys()
   }
 
-  const filteredKeys = computed(() => {
-    let result = store.keys
+  async function generateKey(algorithm, keySize) {
+    return await store.generateKey(algorithm, keySize)
+  }
 
-    if (filterAlgorithm.value !== 'ALL') {
-      result = result.filter(k => k.algorithm === filterAlgorithm.value)
-    }
+  async function deleteKey(id) {
+    return await store.deleteKey(id)
+  }
 
-    if (searchQuery.value) {
-      const query = searchQuery.value.toLowerCase()
-      result = result.filter(k => 
-        k.generatedKey.toLowerCase().includes(query) ||
-        k.algorithm.toLowerCase().includes(query)
-      )
-    }
-
-    if (sortBy.value === 'newest') {
-      result = [...result].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    } else if (sortBy.value === 'oldest') {
-      result = [...result].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-    }
-
-    return result
-  })
+  function resetFilters() {
+    store.resetFilters()
+  }
 
   return {
     keys: computed(() => store.keys),
@@ -50,13 +38,25 @@ export function useKeys() {
     error: computed(() => store.error),
     currentKey: computed(() => store.currentKey),
     keyCount: computed(() => store.keyCount),
-    searchQuery,
-    filterAlgorithm,
-    sortBy,
-    filteredKeys,
-    generateKey: store.generateKey,
+    stats: computed(() => store.stats),
+    searchQuery: computed({
+      get: () => store.searchQuery,
+      set: (value) => store.searchQuery = value
+    }),
+    filterAlgorithm: computed({
+      get: () => store.filterAlgorithm,
+      set: (value) => store.filterAlgorithm = value
+    }),
+    sortBy: computed({
+      get: () => store.sortBy,
+      set: (value) => store.sortBy = value
+    }),
+    filteredKeys: computed(() => store.filteredKeys),
+    isInitialized,
     fetchKeys,
-    deleteKey: store.deleteKey,
+    generateKey,
+    deleteKey,
+    resetFilters,
     clearError: store.clearError
   }
 }

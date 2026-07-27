@@ -23,7 +23,7 @@
     <div v-if="error" class="invalid-feedback">{{ error }}</div>
     <small class="text-muted">
       <i class="bi bi-info-circle"></i>
-      Recommended: {{ recommendedSize }} bits for {{ algorithm }}
+      Recommended: <strong>{{ recommendedSize }}</strong> bits for {{ algorithm }}
     </small>
   </div>
 </template>

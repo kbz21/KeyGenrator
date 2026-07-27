@@ -22,7 +22,7 @@
           Generate Key
         </span>
         <span v-else>
-          <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+          <span class="spinner-border spinner-border-sm me-2"></span>
           Generating...
         </span>
       </button>
@@ -48,22 +48,14 @@ const props = defineProps({
   error: {
     type: String,
     default: ''
-  },
-  initialAlgorithm: {
-    type: String,
-    default: 'AES'
-  },
-  initialKeySize: {
-    type: Number,
-    default: 256
   }
 })
 
-const emit = defineEmits(['submit', 'update:algorithm', 'update:keySize'])
+const emit = defineEmits(['submit'])
 
 const formData = reactive({
-  algorithm: props.initialAlgorithm,
-  keySize: props.initialKeySize
+  algorithm: 'AES',
+  keySize: 256
 })
 
 const errors = reactive({
@@ -71,12 +63,12 @@ const errors = reactive({
   keySize: ''
 })
 
-watch(() => formData.algorithm, (newVal) => {
-  emit('update:algorithm', newVal)
+watch(() => formData.algorithm, () => {
+  errors.algorithm = ''
 })
 
-watch(() => formData.keySize, (newVal) => {
-  emit('update:keySize', newVal)
+watch(() => formData.keySize, () => {
+  errors.keySize = ''
 })
 
 function validateForm() {

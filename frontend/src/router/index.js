@@ -1,11 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: () => import('@/views/HomeView.vue'),
     meta: { title: 'Home' }
   },
   {
@@ -18,7 +17,13 @@ const routes = [
     path: '/keys',
     name: 'keys',
     component: () => import('@/views/KeysView.vue'),
-    meta: { title: 'My Keys' }
+    meta: { title: 'Keys History' }
+  },
+  {
+    path: '/algorithms',
+    name: 'algorithms',
+    component: () => import('@/views/AlgorithmsView.vue'),
+    meta: { title: 'Algorithms' }
   },
   {
     path: '/about',
@@ -28,7 +33,7 @@ const routes = [
   },
   {
     path: '/:pathMatch(.*)*',
-    name: 'notfound',
+    name: 'not-found',
     component: () => import('@/views/NotFoundView.vue'),
     meta: { title: '404' }
   }
@@ -36,11 +41,18 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })
 
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} - Key Generator`
+  document.title = `${to.meta.title} | Key Generator`
   next()
 })
 

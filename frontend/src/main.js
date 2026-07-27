@@ -10,6 +10,10 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import Vue3Toastify from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
 
+// Import custom styles
+import './assets/styles/main.css'
+import './assets/styles/themes.css'
+
 import App from './App.vue'
 import router from './router'
 

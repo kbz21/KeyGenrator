@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { toast } from 'vue3-toastify'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -12,7 +12,6 @@ const axiosInstance = axios.create({
   }
 })
 
-// Request Interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
     if (import.meta.env.DEV) {
@@ -23,7 +22,6 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 )
 
-// Response Interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
     if (import.meta.env.DEV) {
@@ -33,9 +31,10 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     let errorMessage = 'An unexpected error occurred'
+    let status = null
     
     if (error.response) {
-      const status = error.response.status
+      status = error.response.status
       const data = error.response.data
       
       switch (status) {
@@ -63,7 +62,7 @@ axiosInstance.interceptors.response.use(
     
     const customError = new Error(errorMessage)
     customError.originalError = error
-    customError.status = error.response?.status
+    customError.status = status
     
     return Promise.reject(customError)
   }
