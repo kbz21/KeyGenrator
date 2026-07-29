@@ -48,7 +48,7 @@
 
           <div class="about-footer">
             <p>
-              Built with ❤️ using Vue.js &amp; Spring Boot
+              Built using Vue.js &amp; Spring Boot
               <br />
               <small>&copy; {{ currentYear }} - All rights reserved</small>
             </p>
