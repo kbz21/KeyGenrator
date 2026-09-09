@@ -1,102 +1,315 @@
-# Backend (Java/Spring Boot)
-*.class
-*.jar
-*.war
-*.ear
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
-HELP.md
-!**/src/main/**/target/
-!**/src/test/**/target/
+# ============================================================
+# Key Generator - Git Ignore
+# ============================================================
 
-# Frontend (Node.js/Vue)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-dist/
-dist-ssr/
-*.local
-.vite/
-.cache/
-.eslintcache
+# ============================================================
+# BACKEND - JAVA / SPRING BOOT / MAVEN
+# ============================================================
+
+# Maven build output
+backend/target/
+backend/*.class
+backend/*.jar
+backend/*.war
+backend/*.ear
+
+# Maven generated files
+backend/pom.xml.tag
+backend/pom.xml.releaseBackup
+backend/pom.xml.versionsBackup
+backend/pom.xml.next
+backend/release.properties
+backend.dependency-reduced-pom.xml
+backend/buildNumber.properties
+
+# Maven Wrapper generated files
+backend/.mvn/timing.properties
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Maven test reports
+backend/target/test-classes/
+backend/target/surefire-reports/
+backend/target/failsafe-reports/
+
+# ============================================================
+# FRONTEND - NODE.JS / VUE.JS / VITE
+# ============================================================
+
+# Node dependencies
+frontend/node_modules/
+
+# Vue / Vite build output
 frontend/dist/
+frontend/dist-ssr/
 frontend/.vite/
-frontend/*.local
+
+# Frontend caches
+frontend/.cache/
+frontend/.eslintcache/
+frontend/.parcel-cache/
+frontend/.webpack/
+
+# npm logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/bun-debug.log*
+
+# Coverage
+frontend/coverage/
+
+# Local frontend configuration
 frontend/.env
 frontend/.env.local
-frontend/.env.*.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/*.local
 
-# Environment
+# ============================================================
+# ENVIRONMENT VARIABLES / SECRETS
+# ============================================================
+
+# Environment files
 .env
 .env.local
+.env.development
+.env.test
+.env.production
 .env.*.local
-application-dev.yml
-application-prod.yml
-*.local.yml
 
-# IDE
+# Spring Boot local configuration
+backend/application-local.yml
+backend/application-local.yaml
+backend/application-local.properties
+
+# Development / production configurations
+# Ignore these if they contain secrets or machine-specific values
+backend/application-dev.yml
+backend/application-dev.yaml
+backend/application-dev.properties
+
+backend/application-prod.yml
+backend/application-prod.yaml
+backend/application-prod.properties
+
+# ============================================================
+# CRYPTOGRAPHIC / PKI / SECURITY MATERIAL
+# ============================================================
+
+# Private keys
+*.key
+*.pem
+*.p8
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.der
+
+# Certificate signing requests
+*.csr
+
+# Certificate files
+*.crt
+*.cer
+
+# PKCS / cryptographic containers
+*.pkcs12
+*.p7b
+*.p7c
+*.p7m
+*.p7s
+
+# SSH private keys
+id_rsa
+id_rsa.pub
+id_dsa
+id_ecdsa
+id_ed25519
+id_ed25519.pub
+
+# Local cryptographic directories
+keys/
+certs/
+secrets/
+private/
+crypto/
+hsm/
+keystores/
+
+# ============================================================
+# DATABASE / LOCAL DATA
+# ============================================================
+
+# Local database files
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+
+# Database dumps / backups
+*.sql.bak
+*.sql.backup
+*.dump
+
+# ============================================================
+# IDE / EDITORS
+# ============================================================
+
+# IntelliJ IDEA
 .idea/
 *.iml
 *.iws
 *.ipr
+
+# VS Code
+.vscode/
+
+# Eclipse
 .classpath
-.factorypath
 .project
 .settings/
+
+# Spring Tool Suite
 .springBeans
 .sts4-cache
-.vscode/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# Vim / Neovim
+*.swp
+*.swo
+*.swn
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ============================================================
+# GRADLE
+# ============================================================
+
+.gradle/
+build/
+
+# ============================================================
+# OPERATING SYSTEM
+# ============================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+
+# ============================================================
+# LOGS
+# ============================================================
+
+*.log
+logs/
+log/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================================
+# TEST / COVERAGE / REPORTS
+# ============================================================
+
+test-output/
+coverage/
+reports/
+
+# Backend test reports
+backend/target/test-classes/
+backend/target/surefire-reports/
+backend/target/failsafe-reports/
+
+# Frontend test reports
+frontend/coverage/
+
+# ============================================================
+# GENERATED / TEMPORARY FILES
+# ============================================================
+
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+
+# Generated files
+*.generated
+*.cache
+
+# Temporary archives
+*.zip
+*.tar
+*.tar.gz
+
+# ============================================================
+# BUILD / DEPLOYMENT GENERATED FILES
+# ============================================================
+
+# Docker local overrides
+docker-compose.override.yml
+
+# Deployment secrets
+*.secret
+*.credentials
+
+# ============================================================
+# LOCAL DEVELOPMENT FILES
+# ============================================================
+
+# Local configuration
+*.local
+local/
+tmp/
+temp/
+
+# OS/editor backup files
 *.swp
 *.swo
 *~
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-# OS
-.DS_Store
-Thumbs.db
+# ============================================================
+# SECURITY SCANNING / LOCAL TOOL OUTPUT
+# ============================================================
 
-# Logs
-logs/
-*.log
+# Local security scanner output
+security-reports/
+scan-results/
+nmap-results/
+wireshark-captures/
 
-# Database
-*.db
-*.sqlite
+# ============================================================
+# PROJECT-SPECIFIC GENERATED FILES
+# ============================================================
 
-# Test reports
-test-output/
-surefire-reports/
-coverage/
+# Generated key files
+generated-keys/
+generated-certificates/
 
-# Temporary files
-*.tmp
-*.bak
-*.orig
-*.rej
-*.apt_generated
-
-# Frontend
-frontend/node_modules/
-frontend/dist/
-frontend/.vite/
-frontend/npm-debug.log*
-frontend/.env
-frontend/.env.local
-frontend/*.log
+# Exported cryptographic material
+exports/
