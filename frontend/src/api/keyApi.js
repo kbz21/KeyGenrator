@@ -1,10 +1,12 @@
 import axiosInstance from './axios'
 
 export const keyApi = {
-  generateKey(algorithm, keySize) {
+  generateKey(algorithm, keySize, alias = null, purpose = null) {
     return axiosInstance.post('/keys/generate', {
       algorithm: algorithm.toUpperCase(),
-      keySize: parseInt(keySize)
+      keySize: parseInt(keySize),
+      alias: alias || undefined,
+      purpose: purpose || undefined
     })
   },
 
