@@ -1,42 +1,40 @@
 package com.kibrom.keygenerator.dto;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 public class KeyRequestDTO {
 
     @NotBlank(message = "Algorithm is required")
-    @Pattern(regexp = "^(AES|RSA)$", message = "Algorithm must be AES or RSA")
     private String algorithm;
 
     @NotNull(message = "Key size is required")
-    @Min(value = 128, message = "Key size must be at least 128 bits")
     private Integer keySize;
 
-    // Constructors
+    // NEW: Alias field (optional)
+    private String alias;
+
+    // NEW: Purpose field (optional)
+    private String purpose;
+
     public KeyRequestDTO() {}
 
-    public KeyRequestDTO(String algorithm, Integer keySize) {
+    public KeyRequestDTO(String algorithm, Integer keySize, String alias, String purpose) {
         this.algorithm = algorithm;
         this.keySize = keySize;
+        this.alias = alias;
+        this.purpose = purpose;
     }
 
-    // Getters and Setters
-    public String getAlgorithm() {
-        return algorithm;
-    }
+    public String getAlgorithm() { return algorithm; }
+    public void setAlgorithm(String algorithm) { this.algorithm = algorithm; }
 
-    public void setAlgorithm(String algorithm) {
-        this.algorithm = algorithm;
-    }
+    public Integer getKeySize() { return keySize; }
+    public void setKeySize(Integer keySize) { this.keySize = keySize; }
 
-    public Integer getKeySize() {
-        return keySize;
-    }
+    public String getAlias() { return alias; }
+    public void setAlias(String alias) { this.alias = alias; }
 
-    public void setKeySize(Integer keySize) {
-        this.keySize = keySize;
-    }
+    public String getPurpose() { return purpose; }
+    public void setPurpose(String purpose) { this.purpose = purpose; }
 }
