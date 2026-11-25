@@ -1,3 +1,4 @@
+
 <template>
   <div class="key-list">
     <div class="list-header">
@@ -5,11 +6,13 @@
         <i class="bi bi-list-ul text-primary me-2"></i>
         My Keys
       </h2>
+
       <div class="list-actions">
         <span class="badge bg-secondary">{{ keys.length }} keys</span>
-        <button 
+
+        <button
           v-if="keys.length > 0"
-          @click="exportAllKeys" 
+          @click="exportAllKeys"
           class="btn btn-success btn-sm"
         >
           <i class="bi bi-download me-1"></i> Export All
@@ -21,6 +24,7 @@
     <div class="list-filters">
       <div class="search-box">
         <i class="bi bi-search"></i>
+
         <input
           v-model="searchQuery"
           type="text"
@@ -28,17 +32,24 @@
           class="form-control form-control-sm"
         />
       </div>
+
       <div class="filter-group">
         <select v-model="filterAlgorithm" class="form-select form-select-sm">
           <option value="ALL">All</option>
           <option value="AES">AES</option>
           <option value="RSA">RSA</option>
         </select>
+
         <select v-model="sortBy" class="form-select form-select-sm">
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
         </select>
-        <button @click="fetchKeys" class="btn btn-outline-secondary btn-sm" title="Refresh">
+
+        <button
+          @click="fetchKeys"
+          class="btn btn-outline-secondary btn-sm"
+          title="Refresh"
+        >
           <i class="bi bi-arrow-clockwise"></i>
         </button>
       </div>
@@ -54,7 +65,9 @@
     <!-- Empty State -->
     <div v-else-if="filteredKeys.length === 0" class="empty-state">
       <i class="bi bi-inbox display-1 text-muted"></i>
+
       <p class="text-muted mt-3">No keys found</p>
+
       <router-link to="/generate" class="btn btn-primary">
         <i class="bi bi-plus-circle me-2"></i>
         Generate First Key
@@ -71,18 +84,28 @@
         <div class="key-item-info">
           <div class="key-item-badges">
             <span class="badge bg-primary">{{ key.algorithm }}</span>
-            <span class="badge bg-secondary">{{ key.keySize }} bits</span>
-            <span class="badge bg-light text-dark">#{{ key.id }}</span>
+
+            <span class="badge bg-secondary">
+              {{ key.keySize }} bits
+            </span>
+
+            <span class="badge bg-light text-dark">
+              #{{ key.id }}
+            </span>
+
             <span v-if="key.alias" class="badge bg-info text-white">
               <i class="bi bi-tag me-1"></i>{{ key.alias }}
             </span>
           </div>
+
           <pre class="key-item-preview">{{ key.generatedKey.substring(0, 50) }}...</pre>
+
           <small class="key-item-date">
             <i class="bi bi-clock me-1"></i>
             {{ formatDate(key.createdAt) }}
           </small>
         </div>
+
         <div class="key-item-actions">
           <!-- Copy Button -->
           <button
@@ -92,7 +115,7 @@
           >
             <i class="bi bi-clipboard"></i>
           </button>
-          
+
           <!-- Export Dropdown -->
           <div class="dropdown d-inline-block">
             <button
@@ -104,25 +127,43 @@
             >
               <i class="bi bi-download"></i>
             </button>
+
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <a class="dropdown-item" href="#" @click.prevent="exportSingleKey(key, 'txt')">
-                  <i class="bi bi-file-text me-2"></i> Export as TXT
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click.prevent="exportSingleKey(key, 'txt')"
+                >
+                  <i class="bi bi-file-text me-2"></i>
+                  Export as TXT
                 </a>
               </li>
+
               <li>
-                <a class="dropdown-item" href="#" @click.prevent="exportSingleKey(key, 'json')">
-                  <i class="bi bi-file-code me-2"></i> Export as JSON
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click.prevent="exportSingleKey(key, 'json')"
+                >
+                  <i class="bi bi-file-code me-2"></i>
+                  Export as JSON
                 </a>
               </li>
+
               <li>
-                <a class="dropdown-item" href="#" @click.prevent="exportSingleKey(key, 'pem')">
-                  <i class="bi bi-file-lock me-2"></i> Export as PEM
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click.prevent="exportSingleKey(key, 'pem')"
+                >
+                  <i class="bi bi-file-lock me-2"></i>
+                  Export as PEM
                 </a>
               </li>
             </ul>
           </div>
-          
+
           <!-- Delete Button -->
           <button
             @click="deleteKeyItem(key.id)"
@@ -138,10 +179,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
+
 import { useKeys } from '@/composables/useKeys'
 import { useClipboard } from '@/composables/useClipboard'
 import { useExport } from '@/composables/useExport'
+
 import { toast } from 'vue3-toastify'
 
 const {
@@ -156,14 +199,23 @@ const {
 } = useKeys()
 
 const { copyToClipboard } = useClipboard()
-const { exportAsText, exportAsJSON, exportAsPEM, exportAllAsZip } = useExport()
 
+const {
+  exportAsText,
+  exportAsJSON,
+  exportAsPEM,
+  exportAllAsZip
+} = useExport()
+
+// Fetch keys when the component is mounted
 onMounted(() => {
   fetchKeys()
 })
 
+// Format date
 const formatDate = (dateString) => {
   const date = new Date(dateString)
+
   return date.toLocaleString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -173,39 +225,55 @@ const formatDate = (dateString) => {
   })
 }
 
+// Copy key to clipboard
 const copyKey = async (key) => {
-  await copyToClipboard(key)
-  toast.success('📋 Key copied!')
-}
-
-const deleteKeyItem = async (id) => {
-  if (confirm('Are you sure you want to delete this key?')) {
-    await deleteKey(id)
-    toast.success('🗑️ Key deleted!')
+  try {
+    await copyToClipboard(key)
+    toast.success('📋 Key copied!')
+  } catch (error) {
+    console.error('Copy error:', error)
+    toast.error('Failed to copy key')
   }
 }
 
-const exportSingleKey = (key, format) => {
+// Delete key
+const deleteKeyItem = async (id) => {
+  if (confirm('Are you sure you want to delete this key?')) {
+    try {
+      await deleteKey(id)
+      toast.success('🗑️ Key deleted!')
+    } catch (error) {
+      console.error('Delete error:', error)
+      toast.error('Failed to delete key')
+    }
+  }
+}
+
+// Export individual key
+const exportSingleKey = (key, format = 'txt') => {
   const filename = `${key.algorithm}-${key.keySize}-${key.id}`
-  
+
   console.log('📤 Exporting key:', key.id, 'as', format)
-  
+
   try {
-    switch(format) {
+    switch (format) {
       case 'txt':
         exportAsText(key, filename)
         toast.success('📄 Key exported as TXT!')
         break
+
       case 'json':
         exportAsJSON(key, filename)
         toast.success('📋 Key exported as JSON!')
         break
+
       case 'pem':
         exportAsPEM(key, filename)
         toast.success('🔐 Key exported as PEM!')
         break
+
       default:
-        toast.error('Unknown format')
+        toast.error('Unknown export format')
     }
   } catch (error) {
     console.error('Export error:', error)
@@ -213,12 +281,13 @@ const exportSingleKey = (key, format) => {
   }
 }
 
+// Export all keys as ZIP
 const exportAllKeys = async () => {
   if (keys.value.length === 0) {
     toast.warning('No keys to export')
     return
   }
-  
+
   try {
     await exportAllAsZip(keys.value, 'keys-backup')
     toast.success('📦 All keys exported as ZIP!')
@@ -426,21 +495,21 @@ const exportAllKeys = async () => {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .key-item-actions {
     margin-left: 0;
     margin-top: 0.5rem;
     justify-content: flex-end;
   }
-  
+
   .list-filters {
     flex-direction: column;
   }
-  
+
   .filter-group {
     width: 100%;
   }
-  
+
   .filter-group .form-select {
     flex: 1;
   }
