@@ -137,7 +137,11 @@
             </div>
             <div class="key-detail-item">
               <span class="detail-label">Key Alias</span>
-              <span class="detail-value">{{ formData.alias || '—' }}</span>
+              <span class="detail-value">{{ currentKey.alias || '—' }}</span>
+            </div>
+            <div class="key-detail-item">
+              <span class="detail-label">Purpose</span>
+              <span class="detail-value">{{ currentKey.purpose || '—' }}</span>
             </div>
           </div>
 
@@ -240,7 +244,7 @@ const formatDate = (dateString) => {
 
 async function handleGenerate() {
   clearError()
-  const result = await generateKey(formData.algorithm, formData.keySize)
+  const result = await generateKey(formData.algorithm, formData.keySize, formData.alias, formData.purpose)
   if (result) {
     toast.success('Key generated successfully! 🎉')
   }
