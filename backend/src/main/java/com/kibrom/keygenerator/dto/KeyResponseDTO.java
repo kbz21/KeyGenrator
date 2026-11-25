@@ -8,38 +8,29 @@ public class KeyResponseDTO {
     private String algorithm;
     private Integer keySize;
     private String generatedKey;
+    private String alias;      // NEW
+    private String purpose;    // NEW
     private LocalDateTime createdAt;
 
-    // Constructors
     public KeyResponseDTO() {}
 
     public KeyResponseDTO(Long id, String algorithm, Integer keySize,
-                          String generatedKey, LocalDateTime createdAt) {
+                          String generatedKey, String alias, String purpose,
+                          LocalDateTime createdAt) {
         this.id = id;
         this.algorithm = algorithm;
         this.keySize = keySize;
         this.generatedKey = generatedKey;
+        this.alias = alias;
+        this.purpose = purpose;
         this.createdAt = createdAt;
     }
 
-    // Getters
-    public Long getId() {
-        return id;
-    }
-
-    public String getAlgorithm() {
-        return algorithm;
-    }
-
-    public Integer getKeySize() {
-        return keySize;
-    }
-
-    public String getGeneratedKey() {
-        return generatedKey;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public Long getId() { return id; }
+    public String getAlgorithm() { return algorithm; }
+    public Integer getKeySize() { return keySize; }
+    public String getGeneratedKey() { return generatedKey; }
+    public String getAlias() { return alias; }
+    public String getPurpose() { return purpose; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 }
