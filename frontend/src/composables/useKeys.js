@@ -20,8 +20,8 @@ export function useKeys() {
     await store.fetchAllKeys()
   }
 
-  async function generateKey(algorithm, keySize) {
-    return await store.generateKey(algorithm, keySize)
+  async function generateKey(algorithm, keySize, alias = null, purpose = null) {
+    return await store.generateKey(algorithm, keySize, alias, purpose)
   }
 
   async function deleteKey(id) {
