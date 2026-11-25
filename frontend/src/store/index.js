@@ -71,12 +71,12 @@ export const useKeyStore = defineStore('keyStore', () => {
   })
 
   // Actions
-  async function generateKey(algorithm, keySize) {
+  async function generateKey(algorithm, keySize, alias = null, purpose = null) {
     loading.value = true
     error.value = null
     
     try {
-      const response = await keyApi.generateKey(algorithm, keySize)
+      const response = await keyApi.generateKey(algorithm, keySize, alias, purpose)
       currentKey.value = response.data
       keys.value.unshift(response.data)
       toast.success('🔑 Key generated successfully!')
