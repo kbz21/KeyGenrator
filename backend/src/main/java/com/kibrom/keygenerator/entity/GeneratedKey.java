@@ -24,6 +24,14 @@ public class GeneratedKey {
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String generatedKey;
 
+    // NEW: Alias field for searching
+    @Column(length = 100)
+    private String alias;
+
+    // NEW: Purpose field
+    @Column(length = 255)
+    private String purpose;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -42,47 +50,26 @@ public class GeneratedKey {
     }
 
     // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public String getKeyAlgorithm() {
-        return keyAlgorithm;
-    }
+    public String getKeyAlgorithm() { return keyAlgorithm; }
+    public void setKeyAlgorithm(String keyAlgorithm) { this.keyAlgorithm = keyAlgorithm; }
 
-    public void setKeyAlgorithm(String keyAlgorithm) {
-        this.keyAlgorithm = keyAlgorithm;
-    }
+    public Integer getKeySize() { return keySize; }
+    public void setKeySize(Integer keySize) { this.keySize = keySize; }
 
-    public Integer getKeySize() {
-        return keySize;
-    }
+    public String getGeneratedKey() { return generatedKey; }
+    public void setGeneratedKey(String generatedKey) { this.generatedKey = generatedKey; }
 
-    public void setKeySize(Integer keySize) {
-        this.keySize = keySize;
-    }
+    public String getAlias() { return alias; }
+    public void setAlias(String alias) { this.alias = alias; }
 
-    public String getGeneratedKey() {
-        return generatedKey;
-    }
+    public String getPurpose() { return purpose; }
+    public void setPurpose(String purpose) { this.purpose = purpose; }
 
-    public void setGeneratedKey(String generatedKey) {
-        this.generatedKey = generatedKey;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Algorithm getAlgorithm() {
-        return algorithm;
-    }
-
-    public void setAlgorithm(Algorithm algorithm) {
-        this.algorithm = algorithm;
-    }
+    public Algorithm getAlgorithm() { return algorithm; }
+    public void setAlgorithm(Algorithm algorithm) { this.algorithm = algorithm; }
 }
