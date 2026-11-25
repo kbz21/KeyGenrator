@@ -59,25 +59,25 @@ public class KeyService {
             String algorithmName = request.getAlgorithm().toUpperCase();
             Integer keySize = request.getKeySize();
 
-            // Validate key size
             validateKeySize(algorithmName, keySize);
 
             logger.info("Generating {} key with size {} bits", algorithmName, keySize);
 
-            // Generate the key
             String generatedKey = generateKeyString(algorithmName, keySize);
 
-            // Get algorithm from database
             Algorithm algorithm = algorithmRepository
                     .findByNameIgnoreCase(algorithmName)
                     .orElseThrow(() -> new KeyGenerationException("Algorithm not found: " + algorithmName));
 
-            // Create and save key
             GeneratedKey keyEntity = new GeneratedKey();
             keyEntity.setKeyAlgorithm(algorithmName);
             keyEntity.setKeySize(keySize);
             keyEntity.setGeneratedKey(generatedKey);
             keyEntity.setAlgorithm(algorithm);
+            
+            // Save alias and purpose
+            keyEntity.setAlias(request.getAlias());
+            keyEntity.setPurpose(request.getPurpose());
 
             GeneratedKey savedKey = keyRepository.save(keyEntity);
             logger.info("Key generated successfully with ID: {}", savedKey.getId());
