@@ -1,3 +1,4 @@
+
 <template>
   <div v-if="key" class="key-display">
     <!-- Header -->
@@ -18,8 +19,13 @@
     <!-- Key Value -->
     <div class="key-value-wrapper">
       <pre class="key-value">{{ key.generatedKey }}</pre>
+
       <div class="key-actions">
-        <button @click="copyKey" class="action-btn copy-btn">
+        <button
+          @click="copyKey"
+          class="action-btn copy-btn"
+          :class="{ copied: isCopied }"
+        >
           <i :class="isCopied ? 'bi bi-check-lg' : 'bi bi-clipboard'"></i>
           {{ isCopied ? 'Copied' : 'Copy' }}
         </button>
@@ -32,13 +38,16 @@
         <i class="bi bi-download me-1"></i>
         Export Key As:
       </label>
+
       <div class="export-buttons">
         <button @click="exportKey('txt')" class="export-btn txt-btn">
           <i class="bi bi-file-text"></i> TXT
         </button>
+
         <button @click="exportKey('json')" class="export-btn json-btn">
           <i class="bi bi-file-code"></i> JSON
         </button>
+
         <button @click="exportKey('pem')" class="export-btn pem-btn">
           <i class="bi bi-file-lock"></i> PEM
         </button>
@@ -51,18 +60,22 @@
         <span class="detail-label">ID</span>
         <span class="detail-value">#{{ key.id }}</span>
       </div>
+
       <div class="detail-item">
         <span class="detail-label">Algorithm</span>
         <span class="detail-value">{{ key.algorithm }}</span>
       </div>
+
       <div class="detail-item">
         <span class="detail-label">Key Size</span>
         <span class="detail-value">{{ key.keySize }} bits</span>
       </div>
+
       <div class="detail-item">
         <span class="detail-label">Alias</span>
         <span class="detail-value">{{ key.alias || '—' }}</span>
       </div>
+
       <div class="detail-item">
         <span class="detail-label">Created</span>
         <span class="detail-value">{{ formatDate(key.createdAt) }}</span>
@@ -78,7 +91,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { useClipboard } from '@/composables/useClipboard'
 import { useExport } from '@/composables/useExport'
 import { toast } from 'vue3-toastify'
@@ -91,10 +103,21 @@ const props = defineProps({
 })
 
 const { copied: isCopied, copyToClipboard } = useClipboard()
-const { exportAsText, exportAsJSON, exportAsPEM } = useExport()
 
+const {
+  exportAsText,
+  exportAsJSON,
+  exportAsPEM
+} = useExport()
+
+// Format creation date
 const formatDate = (dateString) => {
+  if (!dateString) return '—'
+
   const date = new Date(dateString)
+
+  if (Number.isNaN(date.getTime())) return '—'
+
   return date.toLocaleString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -104,30 +127,40 @@ const formatDate = (dateString) => {
   })
 }
 
+// Copy generated key
 const copyKey = async () => {
-  await copyToClipboard(props.key.generatedKey)
+  try {
+    await copyToClipboard(props.key.generatedKey)
+  } catch (error) {
+    console.error('Copy error:', error)
+    toast.error('Failed to copy key')
+  }
 }
 
+// Export generated key
 const exportKey = (format) => {
   const key = props.key
   const filename = `${key.algorithm}-${key.keySize}-${key.id}`
-  
+
   console.log('🔑 Exporting key:', key.id, 'Format:', format)
-  
+
   try {
-    switch(format) {
+    switch (format) {
       case 'txt':
         exportAsText(key, filename)
         toast.success('📄 Key exported as TXT!')
         break
+
       case 'json':
         exportAsJSON(key, filename)
         toast.success('📋 Key exported as JSON!')
         break
+
       case 'pem':
         exportAsPEM(key, filename)
         toast.success('🔐 Key exported as PEM!')
         break
+
       default:
         toast.error('Unknown export format')
     }
