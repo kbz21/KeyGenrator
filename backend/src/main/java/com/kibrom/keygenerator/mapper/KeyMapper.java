@@ -17,6 +17,8 @@ public class KeyMapper {
                 key.getKeyAlgorithm(),
                 key.getKeySize(),
                 key.getGeneratedKey(),
+                key.getAlias(),
+                key.getPurpose(),
                 key.getCreatedAt()
         );
     }
